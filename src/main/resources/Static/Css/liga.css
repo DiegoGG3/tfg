@@ -1,0 +1,159 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #001a33;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: #002b55;
+    padding: 10px 20px;
+}
+
+header .logo img {
+    width: 50px;
+    height: 50px;
+}
+
+header h1 {
+    margin: 0;
+    margin-left: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #004080;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 10px;
+    display: block;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+section {
+    width: 70%;
+}
+
+section h2 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ffffff;
+    padding: 10px;
+    text-align: center;
+}
+
+aside {
+    width: 25%;
+}
+
+aside .next-match {
+    background-color: #004080;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+aside .next-match h3 {
+    margin: 0;
+}
+
+aside .next-match p {
+    margin: 10px 0;
+}
+
+aside .next-match .result {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+aside .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+aside .options button {
+    background-color: #004080;
+    border: none;
+    color: #ffffff;
+    padding: 15px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+}
+
+aside .options button:hover {
+    background-color: #0066cc;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #002b55;
+    position: relative;
+    width: 100%;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    color: black;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

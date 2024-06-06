@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Jugador</title>
+    <link rel="stylesheet" th:href="@{/css/crear.css}">
+
+</head>
+<body>
+<h1>Create Jugador</h1>
+<form id="contenedor">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+    </div>
+    <div>
+        <label for="apellido1">Primer Apellido:</label>
+        <input type="text" id="apellido1" required>
+    </div>
+    <div>
+        <label for="apellido2">Segundo Apellido:</label>
+        <input type="text" id="apellido2">
+    </div>
+    <div>
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fechaNacimiento" required>
+    </div>
+    <div>
+        <label for="golesTotales">Goles Totales:</label>
+        <input type="number" id="golesTotales">
+    </div>
+    <div>
+        <label for="asistenciasTotales">Asistencias Totales:</label>
+        <input type="number" id="asistenciasTotales" >
+    </div>
+    <div>
+        <label for="nacionalidad">Nacionalidad:</label>
+        <input type="text" id="nacionalidad" >
+    </div>
+    <div>
+        <label for="equipo">Equipo:</label>
+        <select id="equipo">
+            <option value="">--Select Equipo--</option>
+            <option th:each="equipo : ${equipos}" th:value="${equipo.equipoId}" th:text="${equipo.nombre}"></option>
+        </select>
+    </div>
+    <div>
+        <button onclick="submitPersona(event)">Create Jugador</button>
+        <input type="reset" onclick="resetForm()" value="Limpiar" />
+    </div>
+</form>
+<script th:src="@{/js/crear-jugador.js}"></script>
+
+</body>
+</html>

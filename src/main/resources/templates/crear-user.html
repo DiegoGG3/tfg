@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Personas</title>
+</head>
+<body>
+<div id="contenedor">
+    <div><h1>Introducir los campos de las personas</h1></div>
+    <form id="formulario">
+        <label>Nombre               <input type="text"      id="nombre" />    </label>
+        <label>Apellidos             <input type="text"      id="apellido"/>      </label>
+        <label>gmail                <input type="text"      id="gmail"/>         </label>
+        <label>Contraseña            <input type="password"  id="contrasena" />      </label>
+        <label>rol                <input type="text"      id="rol"/>         </label>
+
+        <div id="botones">
+            <input type="submit" onclick="submitPersona(event)" value="Guardar"/>
+            <input type="reset" onclick="resetForm()" value="Limpiar" />
+        </div>
+    </form>
+</div>
+<script th:src="@{/js/crear-user.js}"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Liga Santander</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/liga.css}">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href="#central">Central</a></li>
+        <li><a href="#plantilla">Plantilla</a></li>
+        <li><a href="#personalizar">Personalizar</a></li>
+    </ul>
+</nav>
+<main>
+    <section id="central">
+        <h2>LALIGA SANTANDER</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>LIGA</th>
+                <th>J</th>
+                <th>G</th>
+                <th>E</th>
+                <th>P</th>
+                <th>GF</th>
+                <th>GC</th>
+                <th>DG</th>
+                <th>PTS</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="equipo : ${clasificacion}">
+                <td th:text="${equipo.nombreEquipo}"></td>
+                <td th:text="${equipo.partidosJugados}"></td>
+                <td th:text="${equipo.partidosGanados}"></td>
+                <td th:text="${equipo.partidosEmpatados}"></td>
+                <td th:text="${equipo.partidosPerdidos}"></td>
+                <td th:text="${equipo.golesFavor}"></td>
+                <td th:text="${equipo.golesContra}"></td>
+                <td th:text="${equipo.diferenciaGoles}"></td>
+                <td th:text="${equipo.puntos}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <aside>
+        <div class="next-match">
+            <h3>SIGUIENTE PARTIDO</h3>
+            <p>Agosto 2022</p>
+            <p>Sáb - LALIGA SANTANDER</p>
+            <p>Estadio ABANCA-Balaídos</p>
+            <p class="result">Celta 1 - 3 Athletic</p>
+            <button onclick="showModal()">Ver partidos</button>
+        </div>
+        <div class="options">
+            <button>JUGAR PARTIDO</button>
+            <button>POSICIONES</button>
+            <button>ESTADÍSTICAS DE FUTBOLISTA</button>
+            <button>NOTICIAS</button>
+        </div>
+    </aside>
+</main>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Partidos de la Jornada</h2>
+        <ul id="partidos-jornada">
+            <!-- Aquí se insertarán los partidos con JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Nuestra Empresa de Fútbol</p>
+</footer>
+
+<script>
+    function showModal() {
+        document.getElementById('modal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    // Aquí puedes añadir la lógica para obtener y mostrar los partidos
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Campeonato</title>
+    <link rel="stylesheet" th:href="@{/css/crear.css}">
+</head>
+<body>
+<h1>Crear Nuevo Campeonato</h1>
+<form id="crear-campeonato">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+    </div>
+    <div>
+        <label for="formato">Formato (Ida y vuelta):</label>
+        <input type="checkbox" id="formato">
+    </div>
+    <div>
+        <label for="fechaInicio">Fecha de Inicio:</label>
+        <input type="date" id="fechaInicio" required>
+    </div>
+    <div>
+        <label for="foto">Foto:</label>
+        <input type="text" id="foto">
+    </div>
+    <div>
+        <label for="pais">País:</label>
+        <input type="text" id="pais" required>
+    </div>
+    <div>
+        <label for="equipos">Equipos:</label>
+        <select id="equipos" multiple required>
+            <option th:each="equipo : ${equipos}" th:value="${equipo.equipoId}" th:text="${equipo.nombre}"></option>
+        </select>
+    </div>
+    <div>
+        <button type="button" onclick="submitCampeonato(event)">Crear Campeonato</button>
+        <input type="reset" onclick="resetForm()" value="Limpiar" />
+    </div>
+</form>
+<script th:src="@{/js/crear-campeonato.js}"></script>
+</body>
+</html>

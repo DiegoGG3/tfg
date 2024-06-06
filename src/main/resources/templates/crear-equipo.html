@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Equipo</title>
+    <link rel="stylesheet" th:href="@{/css/crear.css}">
+
+</head>
+<body>
+<h1>Crear Nuevo Equipo</h1>
+<form id="contenedor">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+    </div>
+    <div>
+        <label for="anoFundacion">Año de Fundación:</label>
+        <input type="number" id="anoFundacion" required>
+    </div>
+    <div>
+        <label for="presidente">Presidente:</label>
+        <input type="text" id="presidente" required>
+    </div>
+    <div>
+        <label for="fotoEscudo">Foto del Escudo:</label>
+        <input type="text" id="fotoEscudo">
+    </div>
+    <div>
+        <label for="estadio">Estadio:</label>
+        <input type="text" id="estadio" required>
+    </div>
+    <div>
+    <button onclick="submitEquipo(event)">Crear Equipo</button>
+    <input type="reset" onclick="resetForm()" value="Limpiar" />
+</div>
+</form>
+<script th:src="@{/js/crear-equipo.js}"></script>
+
+</body>
+</html>

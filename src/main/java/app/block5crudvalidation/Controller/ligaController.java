@@ -16,7 +16,7 @@ public class ligaController {
     @Autowired
     private CampeonatoEquipoRepository campeonatoEquipoRepository;
 
-    @GetMapping("/")
+    @GetMapping("/liga")
     public String showLiga(Model model) {
         List<CampeonatoEquipo> equipos = campeonatoEquipoRepository.findByCampeonatoId(1);
         model.addAttribute("equipos", equipos);

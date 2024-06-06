@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Jugadores</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+</head>
+<body>
+<h1>Listado de Jugadores</h1>
+<table id="jugadores-table">
+    <thead>
+    <tr>
+        <th>Nombre<button onclick="sortTable(0)">⬇</button></th>
+        <th>Fecha De nacimiento<button onclick="sortTable(1)">⬇</button></th>
+        <th>Goles totales<button onclick="sortTable(2)">⬇</button></th>
+        <th>Equipo<button onclick="sortTable(3)">⬇</button></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterar sobre la lista de jugadores y mostrar sus datos -->
+    <tr th:each="jugador : ${jugadores}">
+        <td th:text="${jugador.nombre}"></td>
+        <td th:text="${jugador.fechaNacimiento}"></td>
+        <td th:text="${jugador.golesTotales}"></td>
+        <td th:text="${jugador.equipo.nombre}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script th:src="@{/js/ver-jugadores.js}"></script>
+</html>

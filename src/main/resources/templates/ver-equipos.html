@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Equipos</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+</head>
+<body>
+<h1>Listado de Equipos</h1>
+<table id="equipos-table">
+    <thead>
+    <tr>
+        <th><button onclick="sortTable(0)">Nombre</button></th>
+        <th><button onclick="sortTable(1)">Año de Fundación</button></th>
+        <th><button onclick="sortTable(2)">Presidente</button></th>
+        <th><button onclick="sortTable(3)">Número de Premios</button></th>
+        <th><button onclick="sortTable(4)">Estadio</button></th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="equipo : ${equipos}">
+        <td th:text="${equipo.nombre}"></td>
+        <td th:text="${equipo.anoFundacion}"></td>
+        <td th:text="${equipo.presidente}"></td>
+        <td th:text="${equipo.numeroPremios}"></td>
+        <td th:text="${equipo.estadio}"></td>
+        <td><button th:attr="onclick='showPlayersModal(' + ${equipo.equipoId} + ')'">Ver Jugadores</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="players-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Jugadores del Equipo</h2>
+        <ul id="players-list">
+            <!-- Aquí se insertarán los jugadores con JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<script th:src="@{/js/ver-equipos.js}"></script>
+</body>
+</html>

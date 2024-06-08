@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Campeonatos</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+</head>
+<body>
+<h1>Listado de Campeonatos</h1>
+<table id="campeonatos-table">
+    <thead>
+    <tr>
+        <th><button onclick="sortTable(0)">Nombre</button></th>
+        <th><button onclick="sortTable(1)">Formato</button></th>
+        <th><button onclick="sortTable(2)">Fecha de Inicio</button></th>
+        <th><button onclick="sortTable(3)">Ganador</button></th>
+        <th><button onclick="sortTable(4)">País</button></th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="campeonato : ${campeonatos}">
+        <td th:text="${campeonato.nombre}"></td>
+        <td th:text="${campeonato.formato ? 'Sí' : 'No'}"></td>
+        <td th:text="${#dates.format(campeonato.fechaInicio, 'yyyy-MM-dd')}"></td>
+        <td th:text="${campeonato.ganador}"></td>
+        <td th:text="${campeonato.pais}"></td>
+        <td><button th:attr="onclick='showEquiposModal(' + ${campeonato.campeonatoId} + ')'">Ver Equipos</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="equipos-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('equipos-modal')">&times;</span>
+        <h2>Equipos del Campeonato</h2>
+        <ul id="equipos-list">
+            <!-- Aquí se insertarán los equipos con JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<script th:src="@{/js/ver-campeonato.js}"></script>
+</body>
+</html>

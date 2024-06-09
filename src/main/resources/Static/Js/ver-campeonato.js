@@ -22,7 +22,7 @@ function sortTable(columnIndex) {
 }
 
 function showEquiposModal(campeonatoId) {
-    document.getElementById('equipos-modal').style.display = 'block';
+    document.getElementById('equipos-modal').style.display = 'flex';
     fetch('/api/equipos?campeonatoId=' + campeonatoId)
         .then(response => response.json())
         .then(data => {

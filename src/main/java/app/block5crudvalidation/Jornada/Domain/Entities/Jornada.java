@@ -25,4 +25,5 @@ public class Jornada {
     private int numeroJornada;
     private Date fecha;
 
+
 }

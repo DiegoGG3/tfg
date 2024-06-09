@@ -11,13 +11,16 @@ import app.block5crudvalidation.Campeonato.Infraestructure.DTO.EquipoDTO;
 import app.block5crudvalidation.CampeonatoEquipo.Domain.Entities.CampeonatoEquipo;
 import app.block5crudvalidation.Equipo.Application.Services.EquipoService;
 import app.block5crudvalidation.Equipo.Domain.Entities.Equipo;
+import app.block5crudvalidation.Equipo.Infraestructure.Repository.EquipoRepository;
+import app.block5crudvalidation.Jornada.Domain.Entities.Jornada;
+import app.block5crudvalidation.Jornada.Infraestructure.Repository.JornadaRepository;
+import app.block5crudvalidation.Partido.Domain.Entities.Partido;
+import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,6 +32,10 @@ public class CampeonatoController {
     private final CampeonatoOutputMapper campeonatoOutputMapper;
     private final CampeonatoService campeonatoService;
     private final EquipoService equipoService;
+    private final EquipoRepository equipoRepository;
+    private final PartidoRepository partidoRepository;
+    private final JornadaRepository jornadaRepository;
+
 
     @GetMapping
     public ResponseEntity<?> getAllCampeonatos() {
@@ -53,6 +60,8 @@ public class CampeonatoController {
     public CampeonatoInputDTO create(@RequestBody CampeonatoInputDTO campeonatoInputDTO) {
         Campeonato campeonato = convertDtoToEntity(campeonatoInputDTO);
         campeonatoService.save(campeonato);
+        createJornadas(campeonato);
+        createPartidos(campeonato); // Crear los partidos
         return convertEntityToDto(campeonato);
     }
 
@@ -67,7 +76,8 @@ public class CampeonatoController {
 
         Set<CampeonatoEquipo> campeonatoEquipos = new HashSet<>();
         for (EquipoDTO equipoDTO : dto.getEquipos()) {
-            Equipo equipo = equipoService.findById((long) equipoDTO.getEquipoId());
+            Equipo equipo = equipoRepository.findById(equipoDTO.getEquipoId())
+                    .orElseThrow(() -> new RuntimeException("Equipo no encontrado"));
 
             CampeonatoEquipo campeonatoEquipo = new CampeonatoEquipo();
             campeonatoEquipo.setCampeonato(campeonato);
@@ -79,7 +89,6 @@ public class CampeonatoController {
 
         return campeonato;
     }
-
 
     private CampeonatoInputDTO convertEntityToDto(Campeonato campeonato) {
         CampeonatoInputDTO dto = new CampeonatoInputDTO();
@@ -102,6 +111,66 @@ public class CampeonatoController {
         return dto;
     }
 
+    private void createJornadas(Campeonato campeonato) {
+        int numEquipos = campeonato.getCampeonatoEquipos().size();
+        int numJornadas = campeonato.isFormato() ? (numEquipos - 1) * 2 : numEquipos - 1;
+        Set<Jornada> jornadas = new HashSet<>();
+
+        Date fechaInicio = campeonato.getFechaInicio();
+        long oneWeekInMillis = 7 * 24 * 60 * 60 * 1000L;
+
+        for (int i = 1; i <= numJornadas; i++) {
+            Jornada jornada = new Jornada();
+            jornada.setCampeonato(campeonato);
+            jornada.setNumeroJornada(i);
+            jornada.setFecha(new Date(fechaInicio.getTime() + (i - 1) * oneWeekInMillis));
+            jornadas.add(jornada);
+        }
+        campeonato.setJornadas(jornadas);
+        campeonatoService.save(campeonato);  // Actualizar el campeonato con las jornadas
+    }
+
+    private void createPartidos(Campeonato campeonato) {
+        Set<Jornada> jornadas = campeonato.getJornadas();
+        for (Jornada jornada : jornadas) {
+            Set<Equipo> equipos = new HashSet<>();
+            for (CampeonatoEquipo campeonatoEquipo : campeonato.getCampeonatoEquipos()) {
+                equipos.add(campeonatoEquipo.getEquipo());
+            }
+            List<Equipo> equiposList = new ArrayList<>(equipos);
+            // Shuffle the equiposList to ensure randomness in match pairings
+            Collections.shuffle(equiposList);
+
+            // If the format is single round-robin, each team plays exactly once
+            if (!campeonato.isFormato()) {
+                // Pair teams by index
+                for (int i = 0; i < equiposList.size() / 2; i++) {
+                    Equipo equipoLocal = equiposList.get(i);
+                    Equipo equipoVisitante = equiposList.get(i + equiposList.size() / 2);
+                    createPartido(jornada, equipoLocal, equipoVisitante);
+                }
+            } else {
+                // If the format is double round-robin, each team plays twice
+                for (int i = 0; i < equiposList.size(); i++) {
+                    Equipo equipoLocal = equiposList.get(i);
+                    for (int j = i + 1; j < equiposList.size(); j++) {
+                        Equipo equipoVisitante = equiposList.get(j);
+                        createPartido(jornada, equipoLocal, equipoVisitante);
+                    }
+                }
+            }
+        }
+    }
+
+    private void createPartido(Jornada jornada, Equipo equipoLocal, Equipo equipoVisitante) {
+        Partido partido = new Partido();
+        partido.setJornada(jornada);
+        partido.setEquipoLocal(equipoLocal);
+        partido.setEquipoVisitante(equipoVisitante);
+        // Puedes establecer la fecha y hora del partido según sea necesario
+        partido.setFechaHora(new Date());
+        partidoRepository.save(partido);
+    }
 
 
     @PutMapping("/{id}")

@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Campeonatos</title>
     <link rel="stylesheet" th:href="@{/css/ver.css}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 </head>
 <body>
 <h1>Listado de Campeonatos</h1>
-<table id="campeonatos-table">
+<table id="campeonatos-table" class="display">
     <thead>
     <tr>
-        <th><button onclick="sortTable(0)">Nombre</button></th>
-        <th><button onclick="sortTable(1)">Formato</button></th>
-        <th><button onclick="sortTable(2)">Fecha de Inicio</button></th>
-        <th><button onclick="sortTable(3)">Ganador</button></th>
-        <th><button onclick="sortTable(4)">País</button></th>
+        <th>Nombre</th>
+        <th>Formato</th>
+        <th>Fecha de Inicio</th>
+        <th>Ganador</th>
+        <th>País</th>
         <th>Acciones</th>
     </tr>
     </thead>
@@ -36,11 +37,22 @@
         <span class="close" onclick="closeModal('equipos-modal')">&times;</span>
         <h2>Equipos del Campeonato</h2>
         <ul id="equipos-list">
-            <!-- Aquí se insertarán los equipos con JavaScript -->
         </ul>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script th:src="@{/js/ver-campeonato.js}"></script>
+<script>
+    $(document).ready(function() {
+        $('#campeonatos-table').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true
+        });
+    });
+</script>
 </body>
 </html>

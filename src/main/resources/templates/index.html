@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,74 +7,108 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-image: url('/Images/fondoLandin.png'); /* Fondo con imagen */
+            background-size: cover; /* Para que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            color: #fff; /* Texto blanco */
             margin: 0;
             padding: 0;
+            height: 100vh; /* Para asegurar que cubre toda la pantalla */
         }
+
         header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 0;
+            background-color: rgba(0, 64, 128, 0.8); /* Azul más oscuro con transparencia */
+            color: #fff;
+            padding: 20px;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra */
         }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header .login-btn {
+            background-color: #FFD700; /* Dorado para el botón de login */
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+        }
+
+        header .login-btn:hover {
+            background-color: #FFA500; /* Naranja oscuro al pasar el mouse */
+        }
+
         .container {
+            display: flex;
+            justify-content: space-between;
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .section {
-            background-color: white;
-            margin: 20px 0;
+
+        .column {
+            width: 30%; /* Ajustar el ancho de las columnas */
+            background-color: rgba(0, 51, 102, 0.8); /* Fondo azul oscuro con transparencia */
+            margin: 20px;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
         }
-        .section h2 {
+
+        .column h2 {
             margin-top: 0;
+            color: #FFD700; /* Color dorado para los títulos */
         }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
             margin: 10px 0;
-            background-color: #4CAF50;
+            background-color: #00A2E8; /* Azul brillante */
             color: white;
             text-decoration: none;
             border-radius: 4px;
+            transition: background-color 0.3s;
         }
+
         .btn:hover {
-            background-color: #45a049;
-        }
-        .login-btn {
-            background-color: #008CBA;
-        }
-        .login-btn:hover {
-            background-color: #007bb5;
+            background-color: #007bb5; /* Azul más oscuro al pasar el mouse */
         }
     </style>
 </head>
 <body>
 <header>
     <h1>Bienvenido a la Plataforma de Deportes</h1>
+    <a href="/login" class="login-btn">Iniciar Sesión</a>
 </header>
 <div class="container">
-    <div class="section">
+    <div class="column">
         <h2>Jugadores y sus Estadísticas</h2>
         <p>Ver jugadores y sus estadísticas ordenadas.</p>
         <a href="/verjugadores" class="btn">Ver Jugadores</a>
     </div>
-    <div class="section">
+    <div class="column">
         <h2>Equipos y sus Títulos Totales</h2>
         <p>Ver equipos y sus títulos totales.</p>
         <a href="/verequipos" class="btn">Ver Equipos</a>
     </div>
-    <div class="section">
+    <div class="column">
+        <h2>Campeonatos e información</h2>
+        <p>Ver un campeonato creado y su información.</p>
+        <a href="/vercampeonatos" class="btn">Ver Campeonatos</a>
+    </div>
+    <div class="column">
         <h2>Campeonatos y su Clasificación</h2>
         <p>Ver un campeonato creado y su clasificación.</p>
         <a href="/vercampeonatos" class="btn">Ver Campeonatos</a>
     </div>
-    <div class="section">
-        <h2>Iniciar Sesión</h2>
-        <p>Inicia sesión para acceder a funcionalidades adicionales.</p>
-        <a href="/login" class="btn login-btn">Iniciar Sesión</a>
-    </div>
 </div>
+
 </body>
 </html>

@@ -1,9 +1,9 @@
-
 package app.block5crudvalidation.Campeonato.Domain.Entities;
 
 import app.block5crudvalidation.CampeonatoEquipo.Domain.Entities.CampeonatoEquipo;
+import app.block5crudvalidation.Jornada.Domain.Entities.Jornada;
 import jakarta.persistence.*;
-        import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "campeonato")
-@EqualsAndHashCode(exclude = "campeonatoEquipos")
+@EqualsAndHashCode(exclude = {"campeonatoEquipos", "jornadas"})
 public class Campeonato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,9 @@ public class Campeonato {
     private String foto;
     private String pais;
 
-    @OneToMany(mappedBy = "campeonato", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "campeonato", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CampeonatoEquipo> campeonatoEquipos;
+
+    @OneToMany(mappedBy = "campeonato", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Jornada> jornadas;
 }

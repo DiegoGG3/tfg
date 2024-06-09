@@ -4,18 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Equipos</title>
-    <link rel="stylesheet" th:href="@{/css/ver.css}">
+    <style>
+        body {
+            background-image: url('/Images/fondoEquipos.jpg'); /* Fondo con imagen */
+            background-size: cover; /* Para que la imagen cubra toda la pantalla */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Para asegurar que cubre toda la pantalla */
+            font-family: Arial, sans-serif;
+            color: #fff; /* Texto blanco para mayor contraste */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #FFD700; /* Color dorado para el título */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para mejor visibilidad */
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia */
+            border-radius: 10px; /* Bordes redondeados */
+            overflow: hidden; /* Para que los bordes redondeados funcionen */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para la tabla */
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #555; /* Color del borde */
+            text-align: left;
+            color: #fff; /* Color del texto */
+        }
+
+        th {
+            background-color: #333; /* Fondo oscuro para el encabezado */
+            font-weight: bold;
+            color: #FFD700; /* Color dorado para el encabezado */
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente para filas pares */
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente al pasar el mouse */
+        }
+
+        a {
+            color: #00A2E8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilo para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semi-transparente */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro para el contenido del modal */
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+            color: #fff; /* Color del texto */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para el contenido del modal */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <h1>Listado de Equipos</h1>
 <table id="equipos-table">
     <thead>
     <tr>
-        <th><button onclick="sortTable(0)">Nombre</button></th>
-        <th><button onclick="sortTable(1)">Año de Fundación</button></th>
-        <th><button onclick="sortTable(2)">Presidente</button></th>
-        <th><button onclick="sortTable(3)">Número de Premios</button></th>
-        <th><button onclick="sortTable(4)">Estadio</button></th>
+        <th>Nombre<button onclick="sortTable(0)">⬇</button></th>
+        <th>Año de Fundación<button onclick="sortTable(1)">⬇</button></th>
+        <th>Presidente<button onclick="sortTable(2)">⬇</button></th>
+        <th>Número de Premios<button onclick="sortTable(3)">⬇</button></th>
+        <th>Estadio<button onclick="sortTable(4)">⬇</button></th>
         <th>Acciones</th>
     </tr>
     </thead>

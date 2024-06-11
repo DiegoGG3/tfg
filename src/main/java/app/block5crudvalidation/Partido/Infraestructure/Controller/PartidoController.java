@@ -7,6 +7,7 @@ import app.block5crudvalidation.Partido.Domain.Mapper.PartidoInputMapper;
 import app.block5crudvalidation.Partido.Domain.Mapper.PartidoOutputMapper;
 import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoInputDTO;
 import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO;
+import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ public class PartidoController {
     private final PartidoInputMapper partidoInputMapper;
     private final PartidoOutputMapper partidoOutputMapper;
     private final PartidoService partidoService;
+    private final PartidoRepository partidoRepository;
+
 
     @GetMapping
     public ResponseEntity<?> getAllPartidos() {
@@ -40,6 +43,11 @@ public class PartidoController {
     public ResponseEntity<PartidoOutputDTO> getPartidoById(@PathVariable Long id) {
         Partido partido = partidoService.findById(id);
         return ResponseEntity.ok(partidoOutputMapper.OutputPartidoToPartidoDto(partido));
+    }
+
+    @GetMapping("/api/partidos")
+    public List<Partido> getPartidos(@RequestParam("jornadaId") Long jornadaId) {
+        return partidoRepository.findByJornadaId(jornadaId);
     }
 
     @PostMapping

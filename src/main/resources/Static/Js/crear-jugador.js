@@ -13,8 +13,8 @@ function submitPersona(evento) {
             'apellido1': document.getElementById('apellido1').value,
             'apellido2': document.getElementById('apellido2').value,
             'fechaNacimiento': document.getElementById('fechaNacimiento').value,
-            'golesTotales': document.getElementById('golesTotales').value,
-            'asistenciasTotales': document.getElementById('asistenciasTotales').value,
+            'golesTotales': 0,
+            'asistenciasTotales': 0,
             'nacionalidad': document.getElementById('nacionalidad').value,
             'equipo': equipo
         }])

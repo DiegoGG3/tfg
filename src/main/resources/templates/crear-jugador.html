@@ -5,52 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Jugador</title>
     <link rel="stylesheet" th:href="@{/css/crear.css}">
-
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Create Jugador</h1>
-<form id="contenedor">
-    <div>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" required>
-    </div>
-    <div>
-        <label for="apellido1">Primer Apellido:</label>
-        <input type="text" id="apellido1" required>
-    </div>
-    <div>
-        <label for="apellido2">Segundo Apellido:</label>
-        <input type="text" id="apellido2">
-    </div>
-    <div>
-        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" required>
-    </div>
-    <div>
-        <label for="golesTotales">Goles Totales:</label>
-        <input type="number" id="golesTotales">
-    </div>
-    <div>
-        <label for="asistenciasTotales">Asistencias Totales:</label>
-        <input type="number" id="asistenciasTotales" >
-    </div>
-    <div>
-        <label for="nacionalidad">Nacionalidad:</label>
-        <input type="text" id="nacionalidad" >
-    </div>
-    <div>
-        <label for="equipo">Equipo:</label>
-        <select id="equipo">
-            <option value="">--Select Equipo--</option>
-            <option th:each="equipo : ${equipos}" th:value="${equipo.equipoId}" th:text="${equipo.nombre}"></option>
-        </select>
-    </div>
-    <div>
-        <button onclick="submitPersona(event)">Create Jugador</button>
-        <input type="reset" onclick="resetForm()" value="Limpiar" />
-    </div>
-</form>
+<div class="container mt-5">
+    <h1 class="text-center text-light">Crear Jugador</h1>
+    <form id="contenedor" class="bg-dark p-4 rounded">
+        <div class="form-group">
+            <label for="nombre" class="text-light">Nombre:</label>
+            <input type="text" id="nombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="apellido1" class="text-light">Primer Apellido:</label>
+            <input type="text" id="apellido1" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="apellido2" class="text-light">Segundo Apellido:</label>
+            <input type="text" id="apellido2" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="fechaNacimiento" class="text-light">Fecha de Nacimiento:</label>
+            <input type="date" id="fechaNacimiento" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="nacionalidad" class="text-light">Nacionalidad:</label>
+            <input type="text" id="nacionalidad" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="equipo" class="text-light">Equipo:</label>
+            <select id="equipo" class="form-control">
+                <option value="">--Select Equipo--</option>
+                <option th:each="equipo : ${equipos}" th:value="${equipo.equipoId}" th:text="${equipo.nombre}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-block" onclick="submitPersona(event)">Create Jugador</button>
+            <input type="reset" onclick="resetForm()" value="Limpiar" class="btn btn-light btn-block">
+        </div>
+    </form>
+</div>
 <script th:src="@{/js/crear-jugador.js}"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

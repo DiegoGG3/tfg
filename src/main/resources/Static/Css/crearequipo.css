@@ -1,6 +1,6 @@
 /* styles.css */
 body {
-    background-image: url('/Images/fondoCrearJugador.jpg');
+    background-image: url('/Images/fondoCrearEquipo.jpg'); /* Cambia esta URL si es necesario */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

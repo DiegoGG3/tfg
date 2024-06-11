@@ -4,38 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Equipo</title>
-    <link rel="stylesheet" th:href="@{/css/crear.css}">
-
+    <link rel="stylesheet" th:href="@{/css/crearequipo.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Crear Nuevo Equipo</h1>
-<form id="contenedor">
-    <div>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" required>
-    </div>
-    <div>
-        <label for="anoFundacion">Año de Fundación:</label>
-        <input type="number" id="anoFundacion" required>
-    </div>
-    <div>
-        <label for="presidente">Presidente:</label>
-        <input type="text" id="presidente" required>
-    </div>
-    <div>
-        <label for="fotoEscudo">Foto del Escudo:</label>
-        <input type="text" id="fotoEscudo">
-    </div>
-    <div>
-        <label for="estadio">Estadio:</label>
-        <input type="text" id="estadio" required>
-    </div>
-    <div>
-    <button onclick="submitEquipo(event)">Crear Equipo</button>
-    <input type="reset" onclick="resetForm()" value="Limpiar" />
+<div class="container mt-5">
+    <h1 class="text-center text-light">Crear Nuevo Equipo</h1>
+    <form id="contenedor" class="bg-dark p-4 rounded">
+        <div class="form-group">
+            <label for="nombre" class="text-light">Nombre:</label>
+            <input type="text" id="nombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="anoFundacion" class="text-light">Año de Fundación:</label>
+            <input type="number" id="anoFundacion" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="presidente" class="text-light">Presidente:</label>
+            <input type="text" id="presidente" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="fotoEscudo" class="text-light">Foto del Escudo:</label>
+            <input type="text" id="fotoEscudo" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="estadio" class="text-light">Estadio:</label>
+            <input type="text" id="estadio" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-block" onclick="submitEquipo(event)">Crear Equipo</button>
+            <input type="reset" onclick="resetForm()" value="Limpiar" class="btn btn-light btn-block">
+        </div>
+    </form>
 </div>
-</form>
 <script th:src="@{/js/crear-equipo.js}"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

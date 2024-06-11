@@ -1,6 +1,6 @@
 /* styles.css */
 body {
-    background-image: url('/Images/fondoCrearJugador.jpg');
+    background-image: url('/Images/fondoCrearCampeonato.png'); /* Cambia esta URL si es necesario */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -17,7 +17,7 @@ h1 {
     margin: 20px 0;
 }
 
-#contenedor {
+#crear-campeonato {
     background: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     padding: 20px;

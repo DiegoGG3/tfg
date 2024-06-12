@@ -25,5 +25,12 @@ public class Jornada {
     private int numeroJornada;
     private Date fecha;
 
-
+    @Override
+    public String toString() {
+        return "Jornada{" +
+                "fecha=" + fecha +
+                ", id=" + id +
+                ", numeroJornada=" + numeroJornada +
+                '}';
+    }
 }

@@ -35,4 +35,13 @@ public class Partido {
     private int golesVisitante;
     private Date fechaHora;
 
+    @Override
+    public String toString() {
+        return "Partido{" +
+                "id=" + id +
+                ", golesLocal=" + golesLocal +
+                ", golesVisitante=" + golesVisitante +
+                ", fechaHora=" + fechaHora +
+                '}';
+    }
 }

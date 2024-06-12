@@ -3,6 +3,7 @@ package app.block5crudvalidation.Partido.Domain.Mapper;
 
 import app.block5crudvalidation.Partido.Domain.Entities.Partido;
 import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO;
+import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO2;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,5 +17,7 @@ public interface PartidoOutputMapper {
 //    @Mapping(source = "golesVisitante", target = "golesVisitante")
 //    @Mapping(source = "fechaHora", target = "fechaHora")
     PartidoOutputDTO OutputPartidoToPartidoDto(Partido partido);
+    PartidoOutputDTO2 OutputPartidoToPartidoDto2(Partido partido);
+
     Partido OutputPartidoDtoToPartido(PartidoOutputDTO partidoDto);
 }

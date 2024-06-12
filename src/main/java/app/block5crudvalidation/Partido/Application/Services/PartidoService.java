@@ -23,5 +23,8 @@ public interface PartidoService {
 
     List<Jornada> getAllJornadas();
 
+    void addGoal(int partidoId, int jugadorId, String equipoTipo);
+
+    void addAssist(int partidoId, int jugadorId, String equipoTipo);
 
 }

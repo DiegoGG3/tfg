@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Partido</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="background-image: url('/Images/campoDeFutbol.png'); background-size: cover; background-position: center;">
+<div class="container mt-5">
+    <h1 class="text-center text-white mb-4">Detalles del Partido</h1>
+    <div class="card">
+        <div class="card-header">
+            Partido: <span th:text="${partido.equipoLocal.nombre} + ' vs ' + ${partido.equipoVisitante.nombre}"></span>
+        </div>
+        <div class="card-body">
+            <p>
+                <strong>Goles Local:</strong>
+                <span th:text="${partido.golesLocal}"></span>
+                <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalModal(' + ${partido.id} + ', \'local\')'">Añadir Gol</button>
+            </p>
+            <p>
+                <strong>Asistencias Local:</strong>
+                <button class="btn btn-success btn-sm" th:attr="onclick='showAddAssistModal(' + ${partido.id} + ', \'local\')'">Añadir Asistencia</button>
+            </p>
+            <p>
+                <strong>Goles Visitante:</strong>
+                <span th:text="${partido.golesVisitante}"></span>
+                <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalModal(' + ${partido.id} + ', \'visitante\')'">Añadir Gol</button>
+            </p>
+            <p>
+                <strong>Asistencias Visitante:</strong>
+                <button class="btn btn-success btn-sm" th:attr="onclick='showAddAssistModal(' + ${partido.id} + ', \'visitante\')'">Añadir Asistencia</button>
+            </p>
+
+            <p><strong>Fecha y Hora:</strong> <span th:text="${#dates.format(partido.fechaHora, 'yyyy-MM-dd HH:mm')}"></span></p>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-secondary" onclick="history.back()">Volver</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para añadir gol -->
+<div id="addGoalModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Añadir Gol</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addGoalForm">
+                    <input type="hidden" id="partidoId" name="partidoId">
+                    <input type="hidden" id="equipoTipo" name="equipoTipo">
+                    <div class="form-group">
+                        <label for="jugadorId">Seleccionar Jugador:</label>
+                        <select class="form-control" id="jugadorId" name="jugadorId">
+                            <!-- Jugadores serán cargados aquí dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para añadir asistencia -->
+<div id="addAssistModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Añadir Asistencia</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addAssistForm">
+                    <input type="hidden" id="partidoIdAssist" name="partidoId">
+                    <input type="hidden" id="equipoTipoAssist" name="equipoTipo">
+                    <div class="form-group">
+                        <label for="jugadorIdAssist">Seleccionar Jugador:</label>
+                        <select class="form-control" id="jugadorIdAssist" name="jugadorId">
+                            <!-- Jugadores serán cargados aquí dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function showAddGoalModal(partidoId, equipoTipo) {
+        $('#partidoId').val(partidoId);
+        $('#equipoTipo').val(equipoTipo);
+        fetch(`/api/equipos/${equipoTipo}/${partidoId}/jugadores`)
+            .then(response => response.json())
+            .then(data => {
+                const select = $('#jugadorId');
+                select.empty();
+                data.forEach(jugador => {
+                    select.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
+                });
+            });
+        $('#addGoalModal').modal('show');
+    }
+
+    function showAddAssistModal(partidoId, equipoTipo) {
+        $('#partidoIdAssist').val(partidoId);
+        $('#equipoTipoAssist').val(equipoTipo);
+        fetch(`/api/equipos/${equipoTipo}/${partidoId}/jugadores`)
+            .then(response => response.json())
+            .then(data => {
+                const select = $('#jugadorIdAssist');
+                select.empty();
+                data.forEach(jugador => {
+                    select.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
+                });
+            });
+        $('#addAssistModal').modal('show');
+    }
+
+    $('#addGoalForm').submit(function(event) {
+        event.preventDefault();
+        let formData = $(this).serialize();
+        $.post('/api/partidos/goal', formData, function(response) {
+            location.reload();
+        });
+    });
+
+    $('#addAssistForm').submit(function(event) {
+        event.preventDefault();
+        let formData = $(this).serialize();
+        $.post('/api/partidos/assist', formData, function(response) {
+            location.reload();
+        });
+    });
+</script>
+</body>
+</html>

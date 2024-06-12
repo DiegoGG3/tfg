@@ -30,4 +30,16 @@ public class Jugador {
     @JoinColumn(name = "equipoId", nullable = false)
     private Equipo equipo;
 
+    @Override
+    public String toString() {
+        return "Jugador{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido1='" + apellido1 + '\'' +
+                ", apellido2='" + apellido2 + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", golesTotales=" + golesTotales +
+                ", asistenciasTotales=" + asistenciasTotales +
+                ", nacionalidad='" + nacionalidad + '\'' +
+                '}';
+    }
 }

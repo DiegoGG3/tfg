@@ -11,6 +11,7 @@ import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO2;
 import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -84,4 +85,6 @@ public class PartidoController {
         partidoService.deleteById(id);
         return ResponseEntity.ok(partido);
     }
+
+
 }

@@ -116,16 +116,14 @@ h1 {
                 let listItem = document.createElement('li');
                 listItem.className = "list-group-item";
 
-                // Crear el texto del partido
                 let partidoText = document.createTextNode(`${partido.equipoLocal.nombre} vs ${partido.equipoVisitante.nombre} - ${partido.fechaHora}`);
                 listItem.appendChild(partidoText);
 
-                // Crear el botón de "Ver Partido"
                 let verPartidoButton = document.createElement('button');
                 verPartidoButton.className = "btn btn-secondary btn-sm ml-2";  // Agrega tus propias clases aquí
                 verPartidoButton.textContent = "Ver Partido";
                 verPartidoButton.onclick = function() {
-                    window.location.href = '/incidenciaspartido/' + partido.id;
+                    window.location.href = 'incidenciaspartido/' + partido.id;
                 };
                 listItem.appendChild(verPartidoButton);
 

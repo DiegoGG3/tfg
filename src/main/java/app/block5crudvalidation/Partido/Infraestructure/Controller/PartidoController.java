@@ -46,9 +46,10 @@ public class PartidoController {
     }
 
     @GetMapping("/api/partidos")
-    public List<Partido> getPartidos(@RequestParam("jornadaId") Long jornadaId) {
+    public List<Partido> getPartidosByJornadaId(@RequestParam("jornadaId") Long jornadaId) {
         return partidoRepository.findByJornadaId(jornadaId);
     }
+
 
     @PostMapping
     public List<PartidoInputDTO> createAll(@RequestBody List<Partido> partidos) {

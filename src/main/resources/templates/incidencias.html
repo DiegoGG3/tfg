@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Añadir Incidencia</title>
+    <!-- Asegúrate de incluir tus propios estilos y scripts aquí -->
+</head>
+<body>
+<h1>Añadir Incidencia</h1>
+<form id="lista">
+    <label for="minuto">Minuto:</label>
+    <input type="number" id="minuto" th:field="*{minuto}" required>
+
+    <label for="tipo">Tipo:</label>
+    <input type="text" id="tipo" th:field="*{tipo}" required>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" th:field="*{descripcion}" required></textarea>
+
+    <button type="submit">Añadir Incidencia</button>
+</form>
+</body>
+</html>

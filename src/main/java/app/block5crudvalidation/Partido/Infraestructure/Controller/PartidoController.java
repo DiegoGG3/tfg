@@ -7,6 +7,7 @@ import app.block5crudvalidation.Partido.Domain.Mapper.PartidoInputMapper;
 import app.block5crudvalidation.Partido.Domain.Mapper.PartidoOutputMapper;
 import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoInputDTO;
 import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO;
+import app.block5crudvalidation.Partido.Infraestructure.DTO.PartidoOutputDTO2;
 import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,13 @@ public class PartidoController {
     }
 
     @GetMapping("/api/partidos")
-    public List<Partido> getPartidos(@RequestParam("jornadaId") Long jornadaId) {
-        return partidoRepository.findByJornadaId(jornadaId);
+    public ResponseEntity<List<PartidoOutputDTO2>> getPartidos(@RequestParam("jornadaId") Long jornadaId) {
+        List<Partido> result = partidoRepository.findByJornadaId(jornadaId);
+
+        List<PartidoOutputDTO2> dtoList = result.stream()
+                .map(partidoOutputMapper::OutputPartidoToPartidoDto2)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtoList);
     }
 
     @PostMapping

@@ -98,7 +98,7 @@
     function showAddGoalModal(partidoId, equipoTipo) {
         $('#partidoId').val(partidoId);
         $('#equipoTipo').val(equipoTipo);
-        fetch(`/api/equipos/${equipoTipo}/${partidoId}/jugadores`)
+        fetch(`/api/partidos/equipos/${equipoTipo}/${partidoId}/jugadores`)
             .then(response => response.json())
             .then(data => {
                 const select = $('#jugadorId');
@@ -113,7 +113,7 @@
     function showAddAssistModal(partidoId, equipoTipo) {
         $('#partidoIdAssist').val(partidoId);
         $('#equipoTipoAssist').val(equipoTipo);
-        fetch(`/api/equipos/${equipoTipo}/${partidoId}/jugadores`)
+        fetch(`/api/partidos/equipos/${equipoTipo}/${partidoId}/jugadores`)
             .then(response => response.json())
             .then(data => {
                 const select = $('#jugadorIdAssist');

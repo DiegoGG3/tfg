@@ -53,9 +53,9 @@
                 </div>
                 <div class="col-md-8" id="formacion">
                     <div class="text-center mb-4 background-image">
-                        <button class="btn btn-primary btn-lg mt-3 btn-formaciones">
+                        <a class="btn btn-primary btn-lg mt-3 btn-formaciones" th:href="@{/formaciones/{partidoId}(partidoId=${partido.id})}">
                             <span>Ver Formaciones</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

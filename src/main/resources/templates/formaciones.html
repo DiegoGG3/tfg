@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formaciones</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        body, html {
+            height: 95%;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .jugadores-equipo1, .jugadores-equipo2 {
+            width: 15%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .campo {
+            width: 70%;
+            background-image: url('/Images/campoDeFutbol.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .position {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: absolute;
+        }
+        .jugador {
+            cursor: pointer;
+            background-color: #ddd;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .position .jugador {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1 class="text-center mb-4">Formaciones del Partido</h1>
+<div class="container">
+    <div class="jugadores-equipo1">
+        <div th:each="jugador : ${equipo1Jugadores}" th:text="${jugador.nombre + ' ' + jugador.apellido1}" class="jugador" draggable="true" th:data-id="${jugador.id}"></div>
+    </div>
+    <div class="campo">
+        <!-- Left side positions -->
+        <div class="position" style="top: 10%; left: 10%;"></div>
+        <div class="position" style="top: 30%; left: 10%;"></div>
+        <div class="position" style="top: 46%; left: 1%;"></div>
+        <div class="position" style="top: 70%; left: 10%;"></div>
+        <div class="position" style="top: 90%; left: 10%;"></div>
+        <div class="position" style="top: 20%; left: 25%;"></div>
+        <div class="position" style="top: 40%; left: 25%;"></div>
+        <div class="position" style="top: 60%; left: 25%;"></div>
+        <div class="position" style="top: 80%; left: 25%;"></div>
+        <div class="position" style="top: 40%; left: 40%;"></div>
+        <div class="position" style="top: 60%; left: 40%;"></div>
+
+        <!-- Right side positions -->
+        <div class="position" style="top: 10%; right: 10%;"></div>
+        <div class="position" style="top: 30%; right: 10%;"></div>
+        <div class="position" style="top: 46%; right: 1%;"></div>
+        <div class="position" style="top: 70%; right: 10%;"></div>
+        <div class="position" style="top: 90%; right: 10%;"></div>
+        <div class="position" style="top: 20%; right: 25%;"></div>
+        <div class="position" style="top: 40%; right: 25%;"></div>
+        <div class="position" style="top: 60%; right: 25%;"></div>
+        <div class="position" style="top: 80%; right: 25%;"></div>
+        <div class="position" style="top: 40%; right: 40%;"></div>
+        <div class="position" style="top: 60%; right: 40%;"></div>
+    </div>
+    <div class="jugadores-equipo2">
+        <div th:each="jugador : ${equipo2Jugadores}" th:text="${jugador.nombre + ' ' + jugador.apellido1}" class="jugador" draggable="true" th:data-id="${jugador.id}"></div>
+    </div>
+</div>
+
+<button id="guardarFormacion" class="btn btn-primary">Guardar Formación</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function() {
+        $(".jugador").draggable({
+            revert: "invalid",
+            helper: "clone",
+            start: function(event, ui) {
+                $(this).addClass("dragging");
+            },
+            stop: function(event, ui) {
+                $(this).removeClass("dragging");
+            }
+        });
+
+        $(".position").droppable({
+            accept: ".jugador",
+            drop: function(event, ui) {
+                var jugador = ui.helper.clone().css({
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
+                });
+                $(this).empty().append(jugador);
+                jugador.draggable({
+                    revert: "invalid",
+                    helper: "original"
+                });
+                ui.helper.remove();
+
+                // Remove player from the original list
+                ui.draggable.remove();
+
+                // Save player ID in the position
+                $(this).data('jugador-id', jugador.attr('data-id'));
+            }
+        });
+
+        $("#guardarFormacion").click(function() {
+            var formacion = [];
+            $(".position").each(function() {
+                var jugadorId = $(this).data('jugador-id');
+                if (jugadorId) {
+                    formacion.push({
+                        jugadorId: jugadorId,
+                        minutoEntra: 0,
+                        minutoSale: 90
+                    });
+                }
+            });
+
+            var partidoId = 2;
+            var payload = {
+                partidoId: partidoId,
+                formacion: formacion
+            };
+
+            $.ajax({
+                url: '/jugador-partidos',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function(response) {
+                    alert('Formación guardada correctamente.');
+                },
+                error: function(error) {
+                    alert('Error al guardar la formación.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

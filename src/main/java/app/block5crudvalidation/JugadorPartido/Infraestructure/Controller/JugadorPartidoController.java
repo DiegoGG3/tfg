@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +44,14 @@ public class JugadorPartidoController {
     }
 
     @PostMapping
-    public List<JugadorPartidoInputDTO> createAll(@RequestBody List<JugadorPartido> jugadorPartidos) {
-        jugadorPartidoService.saveAll(jugadorPartidos);
-        return jugadorPartidos.stream()
-                .map(jugadorPartidoInputMapper::InputJugadorPartidoToJugadorPartidoDto)
+    public ResponseEntity<List<JugadorPartidoInputDTO>> createAll(@RequestBody List<JugadorPartidoInputDTO> jugadorPartidos) {
+        List<JugadorPartido> entities = jugadorPartidos.stream()
+                .map(jugadorPartidoInputMapper::InputJugadorPartidoDtoToJugadorPartido)
                 .collect(Collectors.toList());
+
+        jugadorPartidoService.saveAll(entities);
+
+        return ResponseEntity.ok(jugadorPartidos);
     }
 
     @PutMapping("/{id}")

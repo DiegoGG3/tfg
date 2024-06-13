@@ -11,4 +11,5 @@ public interface IncidenciasService {
     void deleteById(Long id);
     List<Incidencias> findAll();
     void saveAll(List<Incidencias> incidencias);
+    void addIncidencia(int partidoId, int jugadorId, int minuto, String tipo, String descripcion);
 }

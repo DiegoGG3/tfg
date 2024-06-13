@@ -61,6 +61,8 @@ public class EquipoServiceImpl implements EquipoService {
             throw new IllegalArgumentException("Tipo de equipo no válido: " + equipoTipo);
         }
 
-        return equipo.getJugadores();
+        return equipoRepository.findJugadoresByEquipoId(equipo.getEquipoId());
     }
+
+
 }

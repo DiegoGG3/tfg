@@ -6,8 +6,29 @@
     <title>Detalles del Partido</title>
     <link rel="stylesheet" th:href="@{/css/ver.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .btn-formaciones {
+            position: relative;
+            background-image: url('/Images/campoDeFutbol.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            border: none;
+            width: 80%;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-formaciones span {
+            position: absolute;
+            font-style: italic;
+            font-size: 3.5em;
+        }
+    </style>
 </head>
-<body style="background-image: url('/Images/campoDeFutbol.png'); background-size: cover; background-position: center;">
+<body style="background-image: url('/Images/fondoEquipos.jpg'); background-size: cover; background-position: center;">
 <div class="container mt-5">
     <h1 class="text-center text-white mb-4">Detalles del Partido</h1>
     <div class="card">
@@ -15,48 +36,82 @@
             Partido: <span th:text="${partido.equipoLocal.nombre} + ' vs ' + ${partido.equipoVisitante.nombre}"></span>
         </div>
         <div class="card-body">
-            <p>
-                <strong>Goles Local:</strong>
-                <span th:text="${partido.golesLocal}"></span>
-                <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalModal(' + ${partido.id} + ', \'local\')'">Añadir Gol</button>
-            </p>
-            <p>
-                <strong>Asistencias Local:</strong>
-                <button class="btn btn-success btn-sm" th:attr="onclick='showAddAssistModal(' + ${partido.id} + ', \'local\')'">Añadir Asistencia</button>
-            </p>
-            <p>
-                <strong>Goles Visitante:</strong>
-                <span th:text="${partido.golesVisitante}"></span>
-                <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalModal(' + ${partido.id} + ', \'visitante\')'">Añadir Gol</button>
-            </p>
-            <p>
-                <strong>Asistencias Visitante:</strong>
-                <button class="btn btn-success btn-sm" th:attr="onclick='showAddAssistModal(' + ${partido.id} + ', \'visitante\')'">Añadir Asistencia</button>
-            </p>
-
-            <p><strong>Fecha y Hora:</strong> <span th:text="${#dates.format(partido.fechaHora, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <div class="row">
+                <div class="col-md-4" id="cosas">
+                    <p>
+                        <strong>Goles Local:</strong>
+                        <span th:text="${partido.golesLocal}"></span>
+                        <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalAssistModal(' + ${partido.id} + ', \'local\')'">Añadir Gol</button>
+                    </p>
+                    <p>
+                        <strong>Goles Visitante:</strong>
+                        <span th:text="${partido.golesVisitante}"></span>
+                        <button class="btn btn-success btn-sm" th:attr="onclick='showAddGoalAssistModal(' + ${partido.id} + ', \'visitante\')'">Añadir Gol</button>
+                    </p>
+                    <p><strong>Fecha y Hora:</strong> <span th:text="${#dates.format(partido.fechaHora, 'yyyy-MM-dd HH:mm')}"></span></p>
+                    <button class="btn btn-primary" th:attr="onclick='showAddIncidenciaModal(' + ${partido.id} + ')'">Añadir Incidencia</button>
+                </div>
+                <div class="col-md-8" id="formacion">
+                    <div class="text-center mb-4 background-image">
+                        <button class="btn btn-primary btn-lg mt-3 btn-formaciones">
+                            <span>Ver Formaciones</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="card-footer">
             <button class="btn btn-secondary" onclick="history.back()">Volver</button>
+        </div>
+    </div>
+
+
+
+    <!-- Tabla de Incidencias -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Incidencias
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Minuto</th>
+                    <th>Jugador</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                </tr>
+                </thead>
+                <tbody id="incidenciasTableBody">
+                <!-- Las incidencias serán cargadas aquí dinámicamente -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <!-- Modal para añadir gol -->
-<div id="addGoalModal" class="modal fade">
+<div id="addGoalAssistModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Añadir Gol</h5>
+                <h5 class="modal-title">Añadir Gol y Asistencia</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="addGoalForm">
+                <form id="addGoalAssistForm">
                     <input type="hidden" id="partidoId" name="partidoId">
                     <input type="hidden" id="equipoTipo" name="equipoTipo">
                     <div class="form-group">
-                        <label for="jugadorId">Seleccionar Jugador:</label>
-                        <select class="form-control" id="jugadorId" name="jugadorId">
+                        <label for="jugadorIdGol">Seleccionar Jugador para Gol:</label>
+                        <select class="form-control" id="jugadorIdGol" name="jugadorIdGol">
+                            <!-- Jugadores serán cargados aquí dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="jugadorIdAsistencia">Seleccionar Jugador para Asistencia:</label>
+                        <select class="form-control" id="jugadorIdAsistencia" name="jugadorIdAsistencia">
                             <!-- Jugadores serán cargados aquí dinámicamente -->
                         </select>
                     </div>
@@ -67,23 +122,39 @@
     </div>
 </div>
 
-<!-- Modal para añadir asistencia -->
-<div id="addAssistModal" class="modal fade">
+<!-- Modal para añadir incidencia -->
+<div id="addIncidenciaModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Añadir Asistencia</h5>
+                <h5 class="modal-title">Añadir Incidencia</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="addAssistForm">
-                    <input type="hidden" id="partidoIdAssist" name="partidoId">
-                    <input type="hidden" id="equipoTipoAssist" name="equipoTipo">
+                <form id="addIncidenciaForm">
+                    <input type="hidden" id="partidoIdIncidencia" name="partidoId">
                     <div class="form-group">
-                        <label for="jugadorIdAssist">Seleccionar Jugador:</label>
-                        <select class="form-control" id="jugadorIdAssist" name="jugadorId">
+                        <label for="jugadorIdIncidencia">Seleccionar Jugador:</label>
+                        <select class="form-control" id="jugadorIdIncidencia" name="jugadorId">
                             <!-- Jugadores serán cargados aquí dinámicamente -->
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="minutoIncidencia">Minuto:</label>
+                        <input type="number" class="form-control" id="minutoIncidencia" name="minuto" min="1" max="90">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoIncidencia">Tipo:</label>
+                        <select class="form-control" id="tipoIncidencia" name="tipo">
+                            <option value="Tarjeta amarilla">Tarjeta amarilla</option>
+                            <option value="Tarjeta roja">Tarjeta roja</option>
+                            <option value="Lesion">Lesión</option>
+                            <option value="Fuera de juego">Fuera de juego</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionIncidencia">Descripción:</label>
+                        <textarea class="form-control" id="descripcionIncidencia" name="descripcion"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>
@@ -95,50 +166,74 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    function showAddGoalModal(partidoId, equipoTipo) {
+    function showAddGoalAssistModal(partidoId, equipoTipo) {
         $('#partidoId').val(partidoId);
         $('#equipoTipo').val(equipoTipo);
         fetch(`/api/partidos/equipos/${equipoTipo}/${partidoId}/jugadores`)
             .then(response => response.json())
             .then(data => {
-                const select = $('#jugadorId');
-                select.empty();
+                const selectGol = $('#jugadorIdGol');
+                const selectAsistencia = $('#jugadorIdAsistencia');
+                selectGol.empty();
+                selectAsistencia.empty();
                 data.forEach(jugador => {
-                    select.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
+                    selectGol.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
+                    selectAsistencia.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
                 });
             });
-        $('#addGoalModal').modal('show');
+        $('#addGoalAssistModal').modal('show');
     }
 
-    function showAddAssistModal(partidoId, equipoTipo) {
-        $('#partidoIdAssist').val(partidoId);
-        $('#equipoTipoAssist').val(equipoTipo);
-        fetch(`/api/partidos/equipos/${equipoTipo}/${partidoId}/jugadores`)
+    function showAddIncidenciaModal(partidoId) {
+        $('#partidoIdIncidencia').val(partidoId);
+        fetch(`/api/partidos/${partidoId}/jugadores`)
             .then(response => response.json())
             .then(data => {
-                const select = $('#jugadorIdAssist');
+                const select = $('#jugadorIdIncidencia');
                 select.empty();
                 data.forEach(jugador => {
                     select.append(new Option(jugador.nombre + ' ' + jugador.apellido1, jugador.id));
                 });
             });
-        $('#addAssistModal').modal('show');
+        $('#addIncidenciaModal').modal('show');
     }
 
-    $('#addGoalForm').submit(function(event) {
+    $('#addGoalAssistForm').submit(function(event) {
         event.preventDefault();
         let formData = $(this).serialize();
-        $.post('/api/partidos/goal', formData, function(response) {
+        $.post('/api/partidos/goalAssist', formData, function(response) {
             location.reload();
         });
     });
 
-    $('#addAssistForm').submit(function(event) {
+    $('#addIncidenciaForm').submit(function(event) {
         event.preventDefault();
         let formData = $(this).serialize();
-        $.post('/api/partidos/assist', formData, function(response) {
+        $.post('/api/partidos/incidencia', formData, function(response) {
             location.reload();
         });
+    });
+
+    function loadIncidencias(partidoId) {
+        fetch(`/partidos/${partidoId}/incidencias`)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = $('#incidenciasTableBody');
+                tableBody.empty();
+                data.forEach(incidencia => {
+                    const row = $('<tr>');
+                    row.append($('<td>').text(incidencia.minuto));
+                    row.append($('<td>').text(incidencia.jugador.nombre + ' ' + incidencia.jugador.apellido1));
+                    row.append($('<td>').text(incidencia.tipo));
+                    row.append($('<td>').text(incidencia.descripcion));
+                    tableBody.append(row);
+                });
+            });
+    }
+
+    $(document).ready(function() {
+        const partidoId = [[${partido.id}]];
+        loadIncidencias(partidoId);
     });
 </script>
 </body>

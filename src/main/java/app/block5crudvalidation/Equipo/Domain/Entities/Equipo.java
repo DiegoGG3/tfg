@@ -30,9 +30,6 @@ public class Equipo {
     @OneToMany(mappedBy = "equipo")
     private Set<CampeonatoEquipo> campeonatoEquipos;
 
-    @OneToMany(mappedBy = "equipo")
-    @JsonManagedReference
-    private List<Jugador> jugadores;
 
     @Override
     public String toString() {

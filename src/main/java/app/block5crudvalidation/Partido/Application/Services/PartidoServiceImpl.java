@@ -2,6 +2,10 @@ package app.block5crudvalidation.Partido.Application.Services;
 
 import app.block5crudvalidation.Equipo.Domain.Entities.Equipo;
 import app.block5crudvalidation.Equipo.Infraestructure.Repository.EquipoRepository;
+import app.block5crudvalidation.Incidencias.Domain.Entities.Incidencias;
+import app.block5crudvalidation.Incidencias.Domain.Mapper.IncidenciasOutputMapper;
+import app.block5crudvalidation.Incidencias.Infraestructure.DTO.IncidenciasOutputDTO;
+import app.block5crudvalidation.Incidencias.Infraestructure.Repository.IncidenciasRepository;
 import app.block5crudvalidation.Jornada.Domain.Entities.Jornada;
 import app.block5crudvalidation.Jornada.Infraestructure.Repository.JornadaRepository;
 import app.block5crudvalidation.Jugador.Domain.Entities.Jugador;
@@ -10,10 +14,13 @@ import app.block5crudvalidation.Partido.Domain.Entities.Partido;
 import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +30,8 @@ public class PartidoServiceImpl implements PartidoService {
     private final JugadorRepository jugadorRepository;
     private final EquipoRepository equipoRepository;
     private final JornadaRepository jornadaRepository;
+    private final IncidenciasRepository incidenciasRepository;
+    private final IncidenciasOutputMapper incidenciasOutputMapper;
 
     @Override
     public Partido findById(Long id) {
@@ -92,5 +101,30 @@ public class PartidoServiceImpl implements PartidoService {
         jugadorRepository.save(jugador);
 
         partidoRepository.save(partido);
+    }
+
+    public List<Jugador> getJugadoresByPartido(int partidoId) {
+        Partido partido = partidoRepository.findById(partidoId)
+                .orElseThrow(() -> new EntityNotFoundException("Partido no encontrado con id: " + partidoId));
+
+        List<Jugador> jugadores = new ArrayList<>();
+
+        jugadores.addAll( equipoRepository.findJugadoresByEquipoId(partido.getEquipoVisitante().getEquipoId()));
+        jugadores.addAll( equipoRepository.findJugadoresByEquipoId(partido.getEquipoLocal().getEquipoId()));
+
+        return jugadores;
+    }
+
+
+    public ResponseEntity<List<IncidenciasOutputDTO>> getIncidenciasByPartido(int partidoId) {
+        List<Incidencias> result = incidenciasRepository.findByPartidoId(partidoId);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            List<IncidenciasOutputDTO> dtoList = result.stream()
+                    .map(incidenciasOutputMapper::OutputIncidenciasToIncidenciasDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(dtoList);
+        }
     }
 }

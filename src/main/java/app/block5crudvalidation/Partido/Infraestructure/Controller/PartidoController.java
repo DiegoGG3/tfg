@@ -1,6 +1,8 @@
 package app.block5crudvalidation.Partido.Infraestructure.Controller;
 
 
+import app.block5crudvalidation.Incidencias.Domain.Entities.Incidencias;
+import app.block5crudvalidation.Incidencias.Infraestructure.DTO.IncidenciasOutputDTO;
 import app.block5crudvalidation.Partido.Application.Services.PartidoService;
 import app.block5crudvalidation.Partido.Domain.Entities.Partido;
 import app.block5crudvalidation.Partido.Domain.Mapper.PartidoInputMapper;
@@ -85,6 +87,12 @@ public class PartidoController {
         partidoService.deleteById(id);
         return ResponseEntity.ok(partido);
     }
+
+    @GetMapping("/{partidoId}/incidencias")
+    public ResponseEntity<List<IncidenciasOutputDTO>> getIncidenciasByPartido(@PathVariable int partidoId) {
+        return partidoService.getIncidenciasByPartido(partidoId);
+    }
+
 
 
 }

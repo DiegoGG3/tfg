@@ -1,22 +1,34 @@
-const formulario = document.getElementById('crear-equipo');
+function submitEquipo(event) {
+    event.preventDefault();
 
-function submitEquipo(evento) {
-    console.log(evento);
-    fetch('http://localhost:8082/equipos', {
-        method: 'post',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([{
-            'nombre': document.getElementById('nombre').value,
-            'anoFundacion': document.getElementById('anoFundacion').value,
-            'presidente': document.getElementById('presidente').value,
-            'numeroPremios': 0,
-            'fotoEscudo': document.getElementById('fotoEscudo').value,
-            'estadio': document.getElementById('estadio').value,
-        }])
+    const form = document.getElementById('crear-equipo');
+    const formData = new FormData();
+
+    const equipoInputDTO = {
+        nombre: form.nombre.value,
+        anoFundacion: form.anoFundacion.value,
+        presidente: form.presidente.value,
+        numeroPremios: 0,
+        fotoEscudo: form.fotoEscudo.files[0].name, // Set by the server
+        estadio: form.estadio.value,
+    };
+
+    formData.append('equipos', JSON.stringify([equipoInputDTO]));
+    formData.append('file', form.fotoEscudo.files[0]);
+
+    fetch('http://localhost:8082/equipos/crear', {
+        method: 'POST',
+        body: formData
     })
     .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
+    .then(data => {
+        console.log(data);
+        alert('Equipo creado exitosamente');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al crear el equipo');
+    });
 }
 
 function resetForm() {

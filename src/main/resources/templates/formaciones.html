@@ -122,8 +122,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const partidoId = 2; // Cambia esto al id de la formación que deseas cargar
-        fetch(`/jugador-partidos/partido/${partidoId}`)
+    const currentUrl = window.location.href;
+        const partidoId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+            fetch(`/jugador-partidos/partido/${partidoId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al cargar los jugadores');
@@ -199,8 +200,9 @@
         });
 
         $("#guardarFormacion").click(function() {
-            var partidoId = 2;
-            var formacion = [];
+        const currentUrl = window.location.href;
+        const partidoId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+             var formacion = [];
             $(".position").each(function() {
                 var jugador_id = $(this).data('jugador-id');
                 if (jugador_id) {

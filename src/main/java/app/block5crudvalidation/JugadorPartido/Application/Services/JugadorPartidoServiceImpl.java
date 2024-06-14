@@ -44,4 +44,9 @@ public class JugadorPartidoServiceImpl implements JugadorPartidoService {
     public void saveAll(List<JugadorPartido> jugadorPartidos) {
         jugadorPartidoRepository.saveAll(jugadorPartidos);
     }
+
+    @Override
+    public List<JugadorPartido> findByPartidoId(Long partidoId) {
+        return jugadorPartidoRepository.findByPartidoId(partidoId);
+    }
 }

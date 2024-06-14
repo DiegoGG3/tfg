@@ -16,4 +16,7 @@ public interface JugadorPartidoService {
     List<JugadorPartido> findAll();
 
     void saveAll(List<JugadorPartido> jugadorPartidos);
+
+    List<JugadorPartido> findByPartidoId(Long partidoId);
+
 }

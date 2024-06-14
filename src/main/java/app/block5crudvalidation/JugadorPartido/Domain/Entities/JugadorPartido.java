@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class JugadorPartido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "partidoId", nullable = false)
@@ -27,5 +27,4 @@ public class JugadorPartido {
 
     private int minutoEntra;
     private int minutoSale;
-
 }

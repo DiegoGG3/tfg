@@ -38,6 +38,9 @@
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .jugador {
             cursor: pointer;
@@ -48,12 +51,15 @@
             border-radius: 4px;
         }
         .position .jugador {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
+            position: relative;
             width: 100%;
             text-align: center;
+        }
+        .alineados {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -61,38 +67,53 @@
 <h1 class="text-center mb-4">Formaciones del Partido</h1>
 <div class="container">
     <div class="jugadores-equipo1">
-        <div th:each="jugador : ${equipo1Jugadores}" th:text="${jugador.nombre + ' ' + jugador.apellido1}" class="jugador" draggable="true" th:data-id="${jugador.id}"></div>
+        <h5 class="mb-3">Jugadores Disponibles</h5>
+        <div th:each="jugador : ${equipo1Jugadores}"
+             th:text="${jugador.nombre + ' ' + jugador.apellido1}"
+             class="jugador"
+             draggable="true"
+             th:data-id="${jugador.id}"></div>
     </div>
     <div class="campo">
         <!-- Left side positions -->
-        <div class="position" style="top: 10%; left: 10%;"></div>
-        <div class="position" style="top: 30%; left: 10%;"></div>
-        <div class="position" style="top: 46%; left: 1%;"></div>
-        <div class="position" style="top: 70%; left: 10%;"></div>
-        <div class="position" style="top: 90%; left: 10%;"></div>
-        <div class="position" style="top: 20%; left: 25%;"></div>
-        <div class="position" style="top: 40%; left: 25%;"></div>
-        <div class="position" style="top: 60%; left: 25%;"></div>
-        <div class="position" style="top: 80%; left: 25%;"></div>
-        <div class="position" style="top: 40%; left: 40%;"></div>
-        <div class="position" style="top: 60%; left: 40%;"></div>
+        <div class="position" id="pos1" style="top: 10%; left: 10%;"></div>
+        <div class="position" id="pos2" style="top: 30%; left: 10%;"></div>
+        <div class="position" id="pos3" style="top: 46%; left: 1%;"></div>
+        <div class="position" id="pos4" style="top: 70%; left: 10%;"></div>
+        <div class="position" id="pos5" style="top: 90%; left: 10%;"></div>
+        <div class="position" id="pos6" style="top: 20%; left: 25%;"></div>
+        <div class="position" id="pos7" style="top: 40%; left: 25%;"></div>
+        <div class="position" id="pos8" style="top: 60%; left: 25%;"></div>
+        <div class="position" id="pos9" style="top: 80%; left: 25%;"></div>
+        <div class="position" id="pos10" style="top: 40%; left: 40%;"></div>
+        <div class="position" id="pos11" style="top: 60%; left: 40%;"></div>
 
         <!-- Right side positions -->
-        <div class="position" style="top: 10%; right: 10%;"></div>
-        <div class="position" style="top: 30%; right: 10%;"></div>
-        <div class="position" style="top: 46%; right: 1%;"></div>
-        <div class="position" style="top: 70%; right: 10%;"></div>
-        <div class="position" style="top: 90%; right: 10%;"></div>
-        <div class="position" style="top: 20%; right: 25%;"></div>
-        <div class="position" style="top: 40%; right: 25%;"></div>
-        <div class="position" style="top: 60%; right: 25%;"></div>
-        <div class="position" style="top: 80%; right: 25%;"></div>
-        <div class="position" style="top: 40%; right: 40%;"></div>
-        <div class="position" style="top: 60%; right: 40%;"></div>
+        <div class="position" id="pos12" style="top: 10%; right: 10%;"></div>
+        <div class="position" id="pos13" style="top: 30%; right: 10%;"></div>
+        <div class="position" id="pos14" style="top: 46%; right: 1%;"></div>
+        <div class="position" id="pos15" style="top: 70%; right: 10%;"></div>
+        <div class="position" id="pos16" style="top: 90%; right: 10%;"></div>
+        <div class="position" id="pos17" style="top: 20%; right: 25%;"></div>
+        <div class="position" id="pos18" style="top: 40%; right: 25%;"></div>
+        <div class="position" id="pos19" style="top: 60%; right: 25%;"></div>
+        <div class="position" id="pos20" style="top: 80%; right: 25%;"></div>
+        <div class="position" id="pos21" style="top: 40%; right: 40%;"></div>
+        <div class="position" id="pos22" style="top: 60%; right: 40%;"></div>
     </div>
     <div class="jugadores-equipo2">
-        <div th:each="jugador : ${equipo2Jugadores}" th:text="${jugador.nombre + ' ' + jugador.apellido1}" class="jugador" draggable="true" th:data-id="${jugador.id}"></div>
+        <h5 class="mb-3">Jugadores Disponibles</h5>
+        <div th:each="jugador : ${equipo2Jugadores}"
+             th:text="${jugador.nombre + ' ' + jugador.apellido1}"
+             class="jugador"
+             draggable="true"
+             th:data-id="${jugador.id}"></div>
     </div>
+</div>
+
+<div class="alineados">
+    <h5 class="mb-3">Jugadores Alineados</h5>
+    <ul id="jugadores-alineados"></ul>
 </div>
 
 <button id="guardarFormacion" class="btn btn-primary">Guardar Formación</button>
@@ -100,6 +121,42 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const partidoId = 2; // Cambia esto al id de la formación que deseas cargar
+        fetch(`/jugador-partidos/partido/${partidoId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar los jugadores');
+                }
+                return response.json();
+            })
+            .then(jugadores => {
+                jugadores.forEach(jugador => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${jugador.nombre} ${jugador.apellido1}`;
+                    document.getElementById('jugadores-alineados').appendChild(listItem);
+
+                    // Colocar jugador en posición si tiene posición asignada
+                    if (jugador.posicion) {
+                        const positionId = `pos${jugador.posicion}`;
+                        const positionElement = document.getElementById(positionId);
+                        const jugadorElement = document.createElement('div');
+                        jugadorElement.textContent = `${jugador.nombre} ${jugador.apellido1}`;
+                        jugadorElement.setAttribute('data-id', jugador.id);
+                        jugadorElement.classList.add('jugador');
+                        jugadorElement.style.position = 'absolute';
+                        jugadorElement.style.top = '50%';
+                        jugadorElement.style.left = '50%';
+                        jugadorElement.style.transform = 'translate(-50%, -50%)';
+                        positionElement.appendChild(jugadorElement);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
     $(function() {
         $(".jugador").draggable({
             revert: "invalid",
@@ -132,33 +189,37 @@
 
                 // Save player ID in the position
                 $(this).data('jugador-id', jugador.attr('data-id'));
+
+                // Update jugadores alineados list
+                const jugadorName = jugador.text();
+                const listItem = document.createElement('li');
+                listItem.textContent = jugadorName;
+                document.getElementById('jugadores-alineados').appendChild(listItem);
             }
         });
 
         $("#guardarFormacion").click(function() {
+            var partidoId = 2;
             var formacion = [];
             $(".position").each(function() {
-                var jugadorId = $(this).data('jugador-id');
-                if (jugadorId) {
+                var jugador_id = $(this).data('jugador-id');
+                if (jugador_id) {
                     formacion.push({
-                        jugadorId: jugadorId,
+                        partidoId: partidoId,
+                        jugador_id: jugador_id,
                         minutoEntra: 0,
                         minutoSale: 90
                     });
                 }
             });
 
-            var partidoId = 2;
-            var payload = {
-                partidoId: partidoId,
-                formacion: formacion
-            };
+
 
             $.ajax({
                 url: '/jugador-partidos',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(payload),
+                data: JSON.stringify(formacion),
                 success: function(response) {
                     alert('Formación guardada correctamente.');
                 },

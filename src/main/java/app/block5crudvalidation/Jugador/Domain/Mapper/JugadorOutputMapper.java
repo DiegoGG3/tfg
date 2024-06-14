@@ -3,6 +3,7 @@ package app.block5crudvalidation.Jugador.Domain.Mapper;
 
 import app.block5crudvalidation.Jugador.Domain.Entities.Jugador;
 import app.block5crudvalidation.Jugador.Infraestructure.DTO.JugadorOutputDTO;
+import app.block5crudvalidation.Jugador.Infraestructure.DTO.JugadorOutputDTOSimple;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,4 +20,6 @@ public interface JugadorOutputMapper {
 //    @Mapping(source = "equipo.id", target = "equipoId")
     JugadorOutputDTO OutputJugadorToJugadorDto(Jugador jugador);
     Jugador OutputJugadorDtoToJugador(JugadorOutputDTO jugadorDto);
+    JugadorOutputDTOSimple toJugadorOutputDTOSimple(Jugador jugador);
+
 }

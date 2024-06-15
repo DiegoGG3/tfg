@@ -60,13 +60,11 @@
                 </div>
             </div>
         </div>
-
         <div class="card-footer">
             <button class="btn btn-secondary" onclick="history.back()">Volver</button>
+            <button class="btn btn-danger" id="finalizarPartidoBtn" th:attr="onclick='finalizarPartido(' + ${partido.id} + ')'">Finalizar Partido</button>
         </div>
     </div>
-
-
 
     <!-- Tabla de Incidencias -->
     <div class="card mt-4">
@@ -97,7 +95,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Añadir Gol y Asistencia</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;"></button>
             </div>
             <div class="modal-body">
                 <form id="addGoalAssistForm">
@@ -128,7 +126,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Añadir Incidencia</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;"></button>
             </div>
             <div class="modal-body">
                 <form id="addIncidenciaForm">
@@ -235,6 +233,17 @@
         const partidoId = [[${partido.id}]];
         loadIncidencias(partidoId);
     });
+
+    function finalizarPartido(partidoId) {
+        $.post('/api/partidos/finalizar', { partidoId: partidoId }, function(response) {
+            if (response.success) {
+                alert('Partido finalizado con éxito');
+                location.reload();
+            } else {
+                alert('Error al finalizar el partido');
+            }
+        });
+    }
 </script>
 </body>
 </html>

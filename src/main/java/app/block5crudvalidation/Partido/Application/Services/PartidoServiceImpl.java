@@ -1,5 +1,7 @@
 package app.block5crudvalidation.Partido.Application.Services;
 
+import app.block5crudvalidation.CampeonatoEquipo.Domain.Entities.CampeonatoEquipo;
+import app.block5crudvalidation.CampeonatoEquipo.Infraestructure.Repository.CampeonatoEquipoRepository;
 import app.block5crudvalidation.Equipo.Domain.Entities.Equipo;
 import app.block5crudvalidation.Equipo.Infraestructure.Repository.EquipoRepository;
 import app.block5crudvalidation.Incidencias.Domain.Entities.Incidencias;
@@ -14,6 +16,7 @@ import app.block5crudvalidation.Partido.Domain.Entities.Partido;
 import app.block5crudvalidation.Partido.Infraestructure.Repository.PartidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -126,5 +129,47 @@ public class PartidoServiceImpl implements PartidoService {
                     .collect(Collectors.toList());
             return ResponseEntity.ok(dtoList);
         }
+    }
+
+    @Autowired
+    private CampeonatoEquipoRepository campeonatoEquipoRepository;
+
+    @Transactional
+    public void finalizarPartido(Long partidoId) {
+        Partido partido = partidoRepository.findById(Math.toIntExact(partidoId)).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        partido.setJugado(true);
+        partidoRepository.save(partido);
+
+        CampeonatoEquipo equipoLocal = campeonatoEquipoRepository.findByCampeonatoAndEquipo(partido.getJornada().getCampeonato(), partido.getEquipoLocal());
+        CampeonatoEquipo equipoVisitante = campeonatoEquipoRepository.findByCampeonatoAndEquipo(partido.getJornada().getCampeonato(), partido.getEquipoVisitante());
+
+        equipoLocal.setGolesmarcados(equipoLocal.getGolesmarcados() + partido.getGolesLocal());
+        equipoVisitante.setGolesmarcados(equipoVisitante.getGolesmarcados() + partido.getGolesVisitante());
+
+        equipoLocal.setGolesencajados(equipoLocal.getGolesencajados() + partido.getGolesVisitante());
+        equipoVisitante.setGolesencajados(equipoVisitante.getGolesencajados() + partido.getGolesLocal());
+
+        equipoLocal.setPj(equipoLocal.getPj() + 1);
+        equipoVisitante.setPj(equipoVisitante.getPj() + 1);
+
+        if (partido.getGolesLocal() > partido.getGolesVisitante()) {
+            equipoLocal.setPg(equipoLocal.getPg() + 1);
+            equipoVisitante.setPp(equipoVisitante.getPp() + 1);
+            equipoLocal.setPuntos(equipoLocal.getPuntos() + 3);
+
+        } else if (partido.getGolesLocal() < partido.getGolesVisitante()) {
+            equipoVisitante.setPg(equipoVisitante.getPg() + 1);
+            equipoLocal.setPp(equipoLocal.getPp() + 1);
+            equipoVisitante.setPuntos(equipoVisitante.getPuntos() + 3);
+
+        } else {
+            equipoLocal.setPe(equipoLocal.getPe() + 1);
+            equipoVisitante.setPe(equipoVisitante.getPe() + 1);
+            equipoVisitante.setPuntos(equipoVisitante.getPuntos() + 1);
+            equipoLocal.setPuntos(equipoLocal.getPuntos() + 1);
+        }
+
+        campeonatoEquipoRepository.save(equipoLocal);
+        campeonatoEquipoRepository.save(equipoVisitante);
     }
 }

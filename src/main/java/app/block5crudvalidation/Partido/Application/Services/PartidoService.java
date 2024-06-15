@@ -34,4 +34,6 @@ public interface PartidoService {
     List<Jugador> getJugadoresByPartido(int partidoId);
 
     ResponseEntity<List<IncidenciasOutputDTO>> getIncidenciasByPartido(int partidoId);
+
+    void finalizarPartido(Long partidoId);
 }

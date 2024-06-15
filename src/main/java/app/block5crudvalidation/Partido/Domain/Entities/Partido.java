@@ -34,6 +34,7 @@ public class Partido {
     private int golesLocal;
     private int golesVisitante;
     private Date fechaHora;
+    private boolean jugado;
 
     @Override
     public String toString() {

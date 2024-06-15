@@ -27,6 +27,12 @@ public class CampeonatoEquipo {
     @ManyToOne
     @JoinColumn(name = "equipo_id", referencedColumnName = "equipoId")
     private Equipo equipo;
+    private int pj;
+    private int pe;
+    private int pp;
+    private int pg;
+    private int golesmarcados;
+    private int golesencajados;
 
     private Integer puntos;
 

@@ -14,4 +14,5 @@ public class PartidoOutputDTO2 {
     private Integer golesLocal;
     private Integer golesVisitante;
     private Date fechaHora;
+    private boolean jugado;
 }

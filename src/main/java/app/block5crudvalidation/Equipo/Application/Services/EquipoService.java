@@ -18,4 +18,6 @@ public interface EquipoService {
     void saveAll(List<Equipo> equipos);
 
     List<Jugador> getJugadoresByEquipo(int partidoId, String equipoTipo);
+
+    List<Jugador> findJugadoresByEquipoId(int equipoId);
 }

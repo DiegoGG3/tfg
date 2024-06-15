@@ -64,5 +64,9 @@ public class EquipoServiceImpl implements EquipoService {
         return equipoRepository.findJugadoresByEquipoId(equipo.getEquipoId());
     }
 
+    public List<Jugador> findJugadoresByEquipoId(int equipoId) {
+        return equipoRepository.findJugadoresByEquipoId(equipoId);
+    }
+
 
 }

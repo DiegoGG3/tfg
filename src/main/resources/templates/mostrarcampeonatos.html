@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 </head>
 <style>
-    /* ver.css */
     body {
         background-image: url('/Images/fondoCrearJugador.jpg');
         background-size: cover;
@@ -47,7 +46,17 @@
         background: rgba(255, 255, 255, 0.9);
         color: #000;
     }
+
+    .modal-dialog {
+        max-width: 80%; /* Aumenta el ancho máximo del modal */
+    }
+
+    .table-modal {
+        width: 100%;
+        table-layout: fixed;
+    }
 </style>
+
 <body>
 <div class="container mt-5">
     <h1 class="text-center text-white mb-4">Lista de Campeonatos</h1>
@@ -128,12 +137,15 @@
         fetch('/api/VerCampeonato/' + campeonatoId + '/clasificacion')
             .then(response => response.json())
             .then(data => {
+                // Ordenar los datos por puntos
+                data.sort((a, b) => b.puntos - a.puntos);
+
                 let clasificacionTableBody = document.getElementById('clasificacionTableBody');
                 clasificacionTableBody.innerHTML = '';
                 data.forEach(equipo => {
                     let row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${equipo.nombre}</td>
+                        <td>${equipo.equipo.nombre}</td>
                         <td>${equipo.pj}</td>
                         <td>${equipo.pg}</td>
                         <td>${equipo.pe}</td>
@@ -147,5 +159,6 @@
             });
     }
 </script>
+
 </body>
 </html>

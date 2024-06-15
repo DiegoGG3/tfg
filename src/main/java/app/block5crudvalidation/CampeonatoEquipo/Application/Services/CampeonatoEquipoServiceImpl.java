@@ -50,4 +50,8 @@ public class CampeonatoEquipoServiceImpl implements CampeonatoEquipoService {
     public void saveAll(List<CampeonatoEquipo> campeonatoEquipos) {
         campeonatoEquipoRepository.saveAll(campeonatoEquipos);
     }
+
+    public List<CampeonatoEquipo> findByCampeonatoId(int campeonatoId) {
+        return campeonatoEquipoRepository.findByCampeonatoId(campeonatoId);
+    }
 }

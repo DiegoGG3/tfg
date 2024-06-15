@@ -11,4 +11,5 @@ public interface CampeonatoEquipoService {
     void deleteById(Long id);
     List<CampeonatoEquipo> findAll();
     void saveAll(List<CampeonatoEquipo> campeonatoEquipos);
+    List<CampeonatoEquipo> findByCampeonatoId(int campeonatoId);
 }

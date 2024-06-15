@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campeonatos</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+</head>
+<style>
+    /* ver.css */
+    body {
+        background-image: url('/Images/fondoCrearJugador.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin: 20px 0;
+        color: #fff;
+    }
+
+    .table {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .modal-title, .modal-body, .modal-footer {
+        color: #000;
+    }
+
+    .list-group-item {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+    }
+</style>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center text-white mb-4">Lista de Campeonatos</h1>
+    <div class="table-responsive">
+        <table id="campeonatos-table" class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha Inicio</th>
+                <th>Ganador</th>
+                <th>País</th>
+                <th>Ver Clasificación</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="campeonato : ${campeonatos}">
+                <td th:text="${campeonato.nombre}"></td>
+                <td th:text="${#dates.format(campeonato.fechaInicio, 'yyyy-MM-dd')}"></td>
+                <td th:text="${campeonato.ganador}"></td>
+                <td th:text="${campeonato.pais}"></td>
+                <td>
+                    <button class="btn btn-primary btn-sm" th:attr="onclick='showClasificacionModal(' + ${campeonato.campeonatoId} + ')'">Ver Clasificación</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="clasificacion-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Clasificación del Campeonato</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>PJ</th>
+                            <th>PG</th>
+                            <th>PE</th>
+                            <th>PP</th>
+                            <th>Goles Marcados</th>
+                            <th>Goles Encajados</th>
+                            <th>Puntos</th>
+                        </tr>
+                        </thead>
+                        <tbody id="clasificacionTableBody">
+                        <!-- La clasificación se cargará aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#campeonatos-table').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true
+        });
+    });
+
+    function showClasificacionModal(campeonatoId) {
+        $('#clasificacion-modal').modal('show');
+        fetch('/api/VerCampeonato/' + campeonatoId + '/clasificacion')
+            .then(response => response.json())
+            .then(data => {
+                let clasificacionTableBody = document.getElementById('clasificacionTableBody');
+                clasificacionTableBody.innerHTML = '';
+                data.forEach(equipo => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${equipo.nombre}</td>
+                        <td>${equipo.pj}</td>
+                        <td>${equipo.pg}</td>
+                        <td>${equipo.pe}</td>
+                        <td>${equipo.pp}</td>
+                        <td>${equipo.golesmarcados}</td>
+                        <td>${equipo.golesencajados}</td>
+                        <td>${equipo.puntos}</td>
+                    `;
+                    clasificacionTableBody.appendChild(row);
+                });
+            });
+    }
+</script>
+</body>
+</html>

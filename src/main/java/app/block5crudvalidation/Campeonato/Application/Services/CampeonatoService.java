@@ -15,4 +15,6 @@ public interface CampeonatoService {
     List<Campeonato> findAll();
 
     void saveAll(List<Campeonato> campeonatos);
+
+    Campeonato finalizarCampeonato(Long campeonatoId);
 }

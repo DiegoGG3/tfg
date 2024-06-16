@@ -10,43 +10,43 @@
 </head>
 <style>
     /* ver.css */
-body {
-    background-image: url('/Images/fondoCrearJugador.jpg'); /* Cambia esta URL si es necesario */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-    color: #fff;
-}
+    body {
+        background-image: url('/Images/fondoCrearJugador.jpg'); /* Cambia esta URL si es necesario */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+    }
 
-h1 {
-    text-align: center;
-    font-size: 2.5em;
-    margin: 20px 0;
-    color: #fff;
-}
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin: 20px 0;
+        color: #fff;
+    }
 
-.table {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
+    .table {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
 
-.modal-content {
-    background: rgba(255, 255, 255, 0.9);
-}
+    .modal-content {
+        background: rgba(255, 255, 255, 0.9);
+    }
 
-.modal-title, .modal-body, .modal-footer {
-    color: #000;
-}
+    .modal-title, .modal-body, .modal-footer {
+        color: #000;
+    }
 
-.list-group-item {
-    background: rgba(255, 255, 255, 0.9);
-    color: #000;
-}
+    .list-group-item {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+    }
 
 </style>
 <body style="background-image: url('/Images/campoDeFutbol.png'); background-size: cover; background-position: center;">
@@ -70,6 +70,9 @@ h1 {
                 </td>
             </tr>
             </tbody>
+            <div class="text-center">
+                <button class="btn btn-danger" id="finalizar-campeonato-btn" onclick="finalizarCampeonato()">Finalizar Campeonato</button>
+            </div>
         </table>
     </div>
 
@@ -120,9 +123,9 @@ h1 {
                     listItem.appendChild(partidoText);
 
                     let verPartidoButton = document.createElement('button');
-                    verPartidoButton.className = "btn btn-secondary btn-sm ml-2";  // Agrega tus propias clases aquí
+                    verPartidoButton.className = "btn btn-secondary btn-sm ml-2";
                     verPartidoButton.textContent = "Ver Partido";
-                    verPartidoButton.disabled = partido.jugado; // Deshabilitar botón si el partido está jugado
+                    verPartidoButton.disabled = partido.jugado;
                     verPartidoButton.onclick = function() {
                         window.location.href = 'incidenciaspartido/' + partido.id;
                     };
@@ -131,6 +134,39 @@ h1 {
                     partidosList.appendChild(listItem);
                 });
             });
+    }
+
+    function getCampeonatoIdFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('campeonatoId');
+    }
+
+    function finalizarCampeonato() {
+        const campeonatoId = getCampeonatoIdFromURL();
+        if (!campeonatoId) {
+            alert('Campeonato ID no encontrado en la URL.');
+            return;
+        }
+
+        fetch(`/finalizar/${campeonatoId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al finalizar el campeonato');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un error al finalizar el campeonato');
+        });
     }
 </script>
 </body>

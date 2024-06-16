@@ -1,5 +1,7 @@
 package app.block5crudvalidation.User.Application.Services;
 
+import app.block5crudvalidation.Config.security.UserRegisterDTO;
+import app.block5crudvalidation.User.Domain.Entities.Role;
 import app.block5crudvalidation.User.Domain.Entities.User;
 import app.block5crudvalidation.User.Domain.Mapper.UserInputMapper;
 import app.block5crudvalidation.User.Infraestructure.Repository.UserRepository;
@@ -51,5 +53,22 @@ public class UserServiceImpl implements UserService {
     public User registerUser(User user) {
         user.setContrasena(passwordEncoder.encode(user.getContrasena()));
         return userRepository.save(user);
+    }
+
+    public User register(UserRegisterDTO userRegisterDTO) {
+        User user = new User();
+        user.setNombre(userRegisterDTO.getNombre());
+        user.setApellido(userRegisterDTO.getApellido());
+        user.setGmail(userRegisterDTO.getGmail());
+        user.setContrasena(passwordEncoder.encode(userRegisterDTO.getContrasena()));
+        user.setRole(Role.USER);
+
+        User savedUser = userRepository.save(user);
+        System.out.println("Usuario guardado: " + savedUser);
+        return savedUser;
+    }
+
+    public Optional<User> findByGmail(String gmail) {
+        return userRepository.findByGmail(gmail);
     }
 }

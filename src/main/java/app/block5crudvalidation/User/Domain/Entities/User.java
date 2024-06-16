@@ -19,5 +19,8 @@ public class User {
     private String apellido;
     private String gmail;
     private String contrasena;
-    private String rol;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
+

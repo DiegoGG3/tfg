@@ -46,4 +46,11 @@ public class VerCampeonatoController {
                 .collect(Collectors.toList());
         return (dtoList);
     }
+
+    @GetMapping("/VerCampeonatoAdmin")
+    public String getAllCampeonatosAdmin(Model model) {
+        List<Campeonato> campeonatos = campeonatoService.findAll();
+        model.addAttribute("campeonatos", campeonatos);
+        return "ver-campeonatos-admin";
+    }
 }

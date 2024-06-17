@@ -12,7 +12,7 @@ function submitCampeonato(evento) {
         formato: document.getElementById('formato').checked,
         fechaInicio: document.getElementById('fechaInicio').value,
         ganador: null,
-        foto: document.getElementById('foto').value,
+        foto: null,
         pais: document.getElementById('pais').value,
         equipos: equiposSeleccionados
     };

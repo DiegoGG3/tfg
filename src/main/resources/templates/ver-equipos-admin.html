@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos</title>
+    <link rel="stylesheet" th:href="@{/css/ver.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+</head>
+<style>
+    body {
+        background-image: url('/Images/fondoCrearJugador.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        font-family: 'Arial', sans-serif;
+        color: #fff;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+        margin: 20px 0;
+        color: #fff;
+    }
+
+    .table {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .modal-title, .modal-body, .modal-footer {
+        color: #000;
+    }
+
+    .list-group-item {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+    }
+
+    .modal-dialog {
+        max-width: 80%;
+    }
+</style>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center text-white mb-4">Lista de Equipos</h1>
+    <div class="table-responsive">
+        <table id="equipos-table" class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Año Fundación</th>
+                <th>Presidente</th>
+                <th>Premios</th>
+                <th>Estadio</th>
+                <th>Ver Jugadores</th>
+                <th>Eliminar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="equipo : ${equipos}">
+                <td th:text="${equipo.nombre}"></td>
+                <td th:text="${equipo.anoFundacion}"></td>
+                <td th:text="${equipo.presidente}"></td>
+                <td th:text="${equipo.numeroPremios}"></td>
+                <td th:text="${equipo.estadio}"></td>
+                <td>
+                    <button class="btn btn-primary btn-sm" th:attr="onclick='showPlayersModal(' + ${equipo.equipoId} + ')'">Ver Jugadores</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm" th:attr="onclick='deleteEquipo(' + ${equipo.equipoId} + ')'">Eliminar</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div id="players-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Jugadores del Equipo</h5>
+                    <button type="button" class="close" data-dismiss="modal" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <ul id="players-list" class="list-group">
+                        <!-- Lista de jugadores se cargará aquí dinámicamente -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#equipos-table').DataTable({
+            "paging": true,
+            "pageLength": 8,
+            "searching": true,
+            "ordering": false,
+            "info": true
+        });
+    });
+
+    function sortTable(columnIndex) {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("equipos-table");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("td")[columnIndex];
+                y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+    function showPlayersModal(equipoId) {
+        $('#players-modal').modal('show');
+        fetch('/api/jugadores?equipoId=' + equipoId)
+            .then(response => response.json())
+            .then(data => {
+                let playersList = document.getElementById('players-list');
+                playersList.innerHTML = '';
+                data.forEach(player => {
+                    let listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = player.nombre + ' - ' + player.golesTotales + ' goles' + ' - ' + player.asistenciasTotales + ' asistencias';
+                    playersList.appendChild(listItem);
+                });
+            });
+    }
+
+    function deleteEquipo(equipoId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este equipo?")) {
+            fetch('/equipos/' + equipoId, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                    location.reload();
+
+            });
+        }
+    }
+
+    function closeModal() {
+        $('#players-modal').modal('hide');
+    }
+</script>
+</body>
+</html>

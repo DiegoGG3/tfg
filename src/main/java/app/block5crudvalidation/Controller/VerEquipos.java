@@ -36,4 +36,11 @@ public class VerEquipos {
         model.addAttribute("jugadores", jugadores);
         return "jugadores";
     }
+
+    @GetMapping("/verequiposadmin")
+    public String showEquiposAdmin(Model model) {
+        List<Equipo> equipos = equipoRepository.findAll();
+        model.addAttribute("equipos", equipos);
+        return "ver-equipos-admin";
+    }
 }

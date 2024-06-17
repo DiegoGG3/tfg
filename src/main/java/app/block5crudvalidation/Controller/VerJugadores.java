@@ -29,4 +29,17 @@ public class VerJugadores {
 
         return "ver-jugadores";
     }
+
+    @GetMapping("/verjugadoresadmin")
+    public String mostrarJugadoresAdmin(Model model) {
+        List<Jugador> jugadores = jugadorRepository.findAll();
+
+        List<Jugador> jugadoresOrdenados = jugadores.stream()
+                .sorted(Comparator.comparing(Jugador::getNombre))
+                .collect(Collectors.toList());
+
+        model.addAttribute("jugadores", jugadoresOrdenados);
+
+        return "ver-jugadores-admin";
+    }
 }

@@ -18,8 +18,6 @@ public interface UserService {
 
     Optional<User> loginUser(String gmail, String contrasena);
 
-    User registerUser(User user);
-
      User register(UserRegisterDTO userRegisterDTO);
 
     Optional<User> findByGmail(String gmail);

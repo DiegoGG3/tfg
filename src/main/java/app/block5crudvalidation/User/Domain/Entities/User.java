@@ -20,7 +20,5 @@ public class User {
     private String gmail;
     private String contrasena;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
 }
 

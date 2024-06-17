@@ -29,29 +29,7 @@ public class UserController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute UserRegisterDTO userRegisterDTO) {
         userService.register(userRegisterDTO);
-        return "redirect:/users/login";
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("userLoginDTO", new UserLoginDTO());
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String loginUser(@ModelAttribute UserLoginDTO userLoginDTO, Model model) {
-        Optional<User> user = userService.findByGmail(userLoginDTO.getGmail());
-        if (user.isPresent()) {
-            if (passwordEncoder.matches(userLoginDTO.getContrasena(), user.get().getContrasena())) {
-                model.addAttribute("user", user.get());
-                return "redirect:/admin";  // Redirigir a una página de éxito
-            } else {
-                System.out.println("Contraseña incorrecta para el usuario: " + userLoginDTO.getGmail());
-            }
-        } else {
-            System.out.println("Usuario no encontrado con gmail: " + userLoginDTO.getGmail());
-        }
-        return "redirect:/users/login?error";  // Redirigir a la página de login con error
+        return "redirect:/login";
     }
 
 }

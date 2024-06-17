@@ -49,19 +49,14 @@ public class UserServiceImpl implements UserService {
         return Optional.empty();
     }
 
-    @Override
-    public User registerUser(User user) {
-        user.setContrasena(passwordEncoder.encode(user.getContrasena()));
-        return userRepository.save(user);
-    }
 
+    @Override
     public User register(UserRegisterDTO userRegisterDTO) {
         User user = new User();
         user.setNombre(userRegisterDTO.getNombre());
         user.setApellido(userRegisterDTO.getApellido());
         user.setGmail(userRegisterDTO.getGmail());
-        user.setContrasena(passwordEncoder.encode(userRegisterDTO.getContrasena()));
-        user.setRole(Role.USER);
+        user.setContrasena(userRegisterDTO.getContrasena());
 
         User savedUser = userRepository.save(user);
         System.out.println("Usuario guardado: " + savedUser);

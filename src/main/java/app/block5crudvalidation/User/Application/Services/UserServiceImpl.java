@@ -1,9 +1,7 @@
 package app.block5crudvalidation.User.Application.Services;
 
 import app.block5crudvalidation.Config.security.UserRegisterDTO;
-import app.block5crudvalidation.User.Domain.Entities.Role;
 import app.block5crudvalidation.User.Domain.Entities.User;
-import app.block5crudvalidation.User.Domain.Mapper.UserInputMapper;
 import app.block5crudvalidation.User.Infraestructure.Repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,6 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserInputMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -49,7 +46,6 @@ public class UserServiceImpl implements UserService {
         return Optional.empty();
     }
 
-
     @Override
     public User register(UserRegisterDTO userRegisterDTO) {
         User user = new User();
@@ -63,6 +59,7 @@ public class UserServiceImpl implements UserService {
         return savedUser;
     }
 
+    @Override
     public Optional<User> findByGmail(String gmail) {
         return userRepository.findByGmail(gmail);
     }

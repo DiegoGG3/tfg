@@ -82,6 +82,7 @@ public class CampeonatoController {
             CampeonatoEquipo campeonatoEquipo = new CampeonatoEquipo();
             campeonatoEquipo.setCampeonato(campeonato);
             campeonatoEquipo.setEquipo(equipo);
+            campeonatoEquipo.setPuntos(0);
 
             campeonatoEquipos.add(campeonatoEquipo);
         }
